@@ -10,7 +10,7 @@ const getWorker = (file, content, query) => {
   if (query.inline) {
     const createInlineWorkerPath = JSON.stringify(`!!${path.join(__dirname, 'createInlineWorker.js')}`);
     const fallbackWorkerPath = query.fallback === false ? 'null' : workerPublicPath;
-    return `require(${createInlineWorkerPath})(${JSON.stringify(content)}, ${fallbackWorkerPath})`;
+    return `System.import(/* webpackChunkName: "${query.name}" */ ${createInlineWorkerPath})(${JSON.stringify(content)}, ${fallbackWorkerPath})`;
   }
   return `new Worker(${workerPublicPath})`;
 };
