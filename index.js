@@ -8,9 +8,9 @@ const loaderUtils = require('loader-utils');
 const getWorker = (file, content, query) => {
   const workerPublicPath = `__webpack_public_path__ + ${JSON.stringify(file)}`;
   if (query.inline) {
-    const createInlineWorkerPath = JSON.stringify(`!!${path.join(__dirname, 'createInlineWorker.js')}`);
+    const createInlineWorkerPath = JSON.stringify(`!!${path.join(__dirname, 'createInlineWorker.js')}?name=${query.name}`);
     const fallbackWorkerPath = query.fallback === false ? 'null' : workerPublicPath;
-    return `System.import(/* webpackChunkName: "${query.name}" */ ${createInlineWorkerPath})(${JSON.stringify(content)}, ${fallbackWorkerPath})`;
+    return `require(${createInlineWorkerPath})(${JSON.stringify(content)}, ${fallbackWorkerPath})`;
   }
   return `new Worker(${workerPublicPath})`;
 };
